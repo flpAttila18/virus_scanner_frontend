@@ -1,0 +1,81 @@
+/* Globális beállítások - Háttérátmenet, ami megegyezik a login/register oldaléval */
+.main-page-bg {
+    background: radial-gradient(circle at 50% 30%, rgba(4, 15, 30, 1) 0%, rgba(2, 5, 10, 1) 80%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Kereső kártya alapmérete és finomhangolása */
+.size {
+    width: 100%;
+    max-width: 550px;
+    min-height: 400px;
+    border-radius: 16px !important; /* Lekerekített, modern sarkok */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* Súlyos, prémium árnyék */
+}
+
+/* Eredményjelző kártya finomhangolása */
+.woc {
+    width: 100%;
+    max-width: 550px;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Főcím stílusa a kártyán belül */
+.ct {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+}
+
+/* Fájlnév jelölő (ahova kiírja a kiválasztott fájlt) */
+.ps {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 15px;
+    margin: 25px 0;
+    word-break: break-all; /* Ha túl hosszú a fájlnév, ne lógjon ki */
+}
+
+/* A nagy, domináns akciógomb (Choose file / Start Scan) */
+.lb {
+    width: 100%;
+    height: 54px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+/* Gomb lebegési (hover) effektus: Finom nyújtás és erősebb fény */
+.lb:hover {
+    background-color: #0b5ed7 !important;
+    transform: translateY(-2px); /* Kicsit megemelkedik */
+    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.5); /* Erősebb ragyogás */
+}
+
+/* Gomb lenyomási effektus */
+.lb:active {
+    transform: translateY(1px);
+}
+
+/* Profilkép a navbarban (tökéletes kör alakúra vágva) */
+.pfp {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Elrejtés animációval vagy simán */
+.nonvisable {
+    display: none !important; /* A visibility helyett a display: none szebben kezeli a helyet */
+}

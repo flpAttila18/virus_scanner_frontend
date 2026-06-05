@@ -2,16 +2,24 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import def from '../Images/default.jpg'; 
+import { useAuth } from '../context/Authcontext'; // Importáljuk a globális auth-ot
 
 export default function Navbar() {
     const navigate = useNavigate();
+    
+    // Kiszedjük a globális felhőből az adatokat és a kijelentkezést
+    const { user, onLogout, loading } = useAuth(); 
+
+    // Amíg a háttérben ellenőrzi a rendszer, hogy be vagyunk-e lépve, ne villanjon be rossz gomb
+    if (loading) return null; 
+
+    const isLoggedIn = !!user;
 
     return (
-        /* bg-black biztosítja a full fekete hátteret, a navbar-dark pedig a fehér szövegeket */
         <nav className="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
             <div className="container-fluid">
                 
-                {/* BRAND / LOGO - text-white-50 vagy text-white a tiszta fehérhez */}
+                {/* BRAND / LOGO */}
                 <button className="navbar-brand btn btn-link text-decoration-none text-white fw-bold" onClick={() => navigate('/')}>
                     Navbar
                 </button>
@@ -32,22 +40,16 @@ export default function Navbar() {
                 {/* MENÜPONTOK KONTÉNERE */}
                 <div className="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
                     <ul className="navbar-nav">
-                        
-                        {/* 1. MENÜPONT */}
                         <li className="nav-item">
                             <button className="nav-link active btn btn-link text-decoration-none" onClick={() => navigate('/')}>
                                 Home
                             </button>
                         </li>
-                        
-                        {/* 2. MENÜPONT */}
                         <li className="nav-item">
                             <button className="nav-link btn btn-link text-decoration-none" onClick={() => navigate('/features')}>
                                 Features
                             </button>
                         </li>
-                        
-                        {/* 3. MENÜPONT */}
                         <li className="nav-item">
                             <button className="nav-link btn btn-link text-decoration-none" onClick={() => navigate('/pricing')}>
                                 Pricing
@@ -55,39 +57,60 @@ export default function Navbar() {
                         </li>
                     </ul>
 
-                    {/* PROFIL DROPDOWN */}
-                    <ul className="navbar-nav">
-                        <li className="nav-item dropdown">
+                    {/* JOGOSULTSÁG ALAPÚ JOBB OLDAL */}
+                    {isLoggedIn ? (
+                        /* --- BEJELENTKEZETT ÁLLAPOT (PROFIL DROPDOWN) --- */
+                        <ul className="navbar-nav">
+                            <li className="nav-item dropdown">
+                                <button 
+                                    className="nav-link dropdown-toggle btn btn-link text-decoration-none d-flex align-items-center gap-2 text-white" 
+                                    id="navbarDropdownMenuLink" 
+                                    role="button" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false"
+                                >
+                                    <span className="small text-white-50">{user.userName || user.email}</span>
+                                    <img src={def} className='pfp' alt="profile" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+                                </button>
+                                
+                                <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark bg-black border-secondary" aria-labelledby="navbarDropdownMenuLink">
+                                    <li>
+                                        <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/action')}>
+                                            Action
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/another-action')}>
+                                            Another action
+                                        </button>
+                                    </li>
+                                    <hr className="dropdown-divider border-secondary" />
+                                    <li>
+                                        {/* Meghívjuk a globális logout függvényt */}
+                                        <button className="dropdown-item btn btn-link text-start text-decoration-none text-danger fw-bold" onClick={onLogout}>
+                                            Kijelentkezés
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    ) : (
+                        /* --- VENDÉG ÁLLAPOT (SIGN IN | LOG IN GOMBOK) --- */
+                        <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
                             <button 
-                                className="nav-link dropdown-toggle btn btn-link text-decoration-none" 
-                                id="navbarDropdownMenuLink" 
-                                role="button" 
-                                data-bs-toggle="dropdown" 
-                                aria-expanded="false"
+                                className="btn btn-outline-light btn-sm fw-bold px-3 py-2 rounded-3" 
+                                onClick={() => navigate('/register')}
                             >
-                                <img src={def} className='pfp' alt="profile" />
+                                Sign In
                             </button>
-                            
-                            {/* A lenyíló menü is megkapta a bg-black és navbar-dark kompatibilis formázást */}
-                            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark bg-black border-secondary" aria-labelledby="navbarDropdownMenuLink">
-                                <li>
-                                    <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/action')}>
-                                        Action
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/another-action')}>
-                                        Another action
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/something-else')}>
-                                        Something else here
-                                    </button>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                            <button 
+                                className="btn btn-primary btn-sm fw-bold px-3 py-2 rounded-3" 
+                                onClick={() => navigate('/login')}
+                            >
+                                Log In
+                            </button>
+                        </div>
+                    )}
                 </div>
 
             </div>

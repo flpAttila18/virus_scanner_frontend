@@ -31,7 +31,7 @@ export default function Register() {
         try {
             const data =await register(username , psw , email)
             if(data.error){
-                return alert(data)
+                return alert(data.error)
             }
             setMess(data.message)
             setTimeout(() =>navigate("/login"),600);
@@ -165,15 +165,7 @@ export default function Register() {
                                 </div>
 
                                 {/* Google Regisztráció */}
-                                <button type="button" className="btn btn-outline-light w-100 py-2.5 rounded-3 mb-4 d-flex align-items-center justify-content-center gap-2 google-btn">
-                                    <svg width="18" height="18" viewBox="0 0 24 24">
-                                        <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.6 2.8C6.01 7.22 8.76 5.04 12 5.04z"/>
-                                        <path fill="#4285F4" d="M23.5 12.25c0-.82-.07-1.6-.22-2.35H12v4.5h6.46c-.28 1.47-1.11 2.72-2.36 3.56l3.65 2.84c2.14-1.97 3.38-4.88 3.38-8.55z"/>
-                                        <path fill="#FBBC05" d="M5.1 14.7c-.24-.72-.38-1.49-.38-2.3s.14-1.58.38-2.3L1.5 7.3C.54 9.22 0 11.35 0 13.6c0 2.25.54 4.38 1.5 6.3l3.6-2.92z"/>
-                                        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.65-2.84c-1.01.68-2.31 1.09-3.31 1.09-3.24 0-5.99-2.18-6.97-5.26l-3.6 2.8C3.4 20.35 7.35 23 12 23z"/>
-                                    </svg>
-                                    Regisztráció Google-lel
-                                </button>
+                             
                             </form>
 
                             {/* Bejelentkezés link */}

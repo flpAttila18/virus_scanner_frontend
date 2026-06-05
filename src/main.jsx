@@ -7,9 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Index from '../src/pages/Index'
 import Register from '../src/pages/Register'
 import Login from '../src/pages/Login'
+import { AuthProvider } from '../src/context/Authcontext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Index/>}/>
@@ -17,5 +19,6 @@ createRoot(document.getElementById('root')).render(
         <Route path='/login' element={<Login/>}/>
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )

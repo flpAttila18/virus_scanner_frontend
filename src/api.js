@@ -30,7 +30,7 @@ export async function register(username , psw , email) {
         headers:{
             'content-type':'application/json'
         },
-        body: JSON.stringify({username ,psw , email}),
+        body: JSON.stringify({username ,password:psw, email:email}),
 
     })
      const data = await res.json()
@@ -41,4 +41,50 @@ export async function register(username , psw , email) {
 
      return data
 
+}
+
+
+export async function  login(email , psw) {
+    const res = await fetch (`${Scan_Backend_URL}/auth/login`, {
+        method:'POST',
+
+        headers: {
+            'content-type':'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify({email: email, password: psw})
+    })
+    const data = await res.json()
+
+    if(data.error){
+        return { error: data.error || "Hibás bejelentkezési adatok." };
+    }
+    return data
+}
+
+export async function whoami() {
+    const res = await fetch(`${Scan_Backend_URL}/auth/whoami`,{
+        method:'GET',
+        credentials:'include'
+    })
+    if(!res.ok){
+        const data = await res.json()
+        return {error:data?.error}
+    }
+    const data = await res.json()
+    return data
+}
+
+
+export async function logout() { // <-- Figyelj, hogy pontosan 'logout' legyen!
+    try {
+        const res = await fetch(`${Scan_Backend_URL}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+            // ... a többi kódod ...
+        });
+        return await res.json();
+    } catch (err) {
+        return { error: "Nem sikerült a kijelentkezés." };
+    }
 }

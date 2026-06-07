@@ -2,24 +2,38 @@ const Scan_Backend_URL = 'http://localhost:5000/api'
 
 export async function uploadFileToBackend(file) {
     try {
-        const formData = new FormData()
-        formData.append('file', file)
+        const formData = new FormData();
+        formData.append('file', file);
 
-        const res = await fetch(`${Scan_Backend_URL}/upload`,{
-            method:'POST',
-            body:formData,
-            credentials:'include'
+        const res = await fetch(`${Scan_Backend_URL}/upload`, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include' // Ez küldi el a sütit (X-Auth-token)
         });
-        const text = await res.text();
-        const data = text  ? JSON.parse(text) :{};
 
-        if(!res.ok){
-            return {error:data.error || `szerver hiba :${res.status}`}
+        // 1. Ha nem vagyunk bejelentkezve, vagy lejárt a munkamenet (401)
+        if (res.status === 401) {
+            return { error: "Kérlek, jelentkezz be a szolgáltatás használatáért!" };
         }
-        return data
+
+        // 2. Ha nincs jogosultság (403)
+        if (res.status === 403) {
+            return { error: "Nincs jogosultságod a művelet végrehajtásához!" };
+        }
+
+        // 3. Bármilyen egyéb szerveroldali hiba (pl. 500)
+        if (!res.ok) {
+            return { error: `Szerverhiba történt a feltöltés során! (Kód: ${res.status})` };
+        }
+
+        // Ha minden sikeres (200 OK), beolvassuk a választ
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : {};
+        return data;
+
     } catch (err) {
-        console.error("feltöltési hiba : ", err)
-        return{error: "hálózati hiba történt a feltöltés során"}
+        console.error("Feltöltési hiba: ", err);
+        return { error: "Hálózati hiba történt, a szerver nem elérhető!" };
     }
 }
 
@@ -62,17 +76,27 @@ export async function  login(email , psw) {
     return data
 }
 
+
+
 export async function whoami() {
-    const res = await fetch(`${Scan_Backend_URL}/auth/whoami`,{
-        method:'GET',
-        credentials:'include'
-    })
-    if(!res.ok){
-        const data = await res.json()
-        return {error:data?.error}
+    try {
+        const res = await fetch(`${Scan_Backend_URL}/auth/whoami`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        // Ha a szerver hibát dobott (pl. 401 Unauthorized), nem próbálunk meg JSON-t olvasni feleslegesen
+        if (!res.ok) {
+            return { error: "Nem autorizált vagy lejárt munkamenet." };
+        }
+
+        // Csak akkor olvassuk be a JSON-t, ha a válasz státusza OK (200-299)
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        // Hálózati hiba esetén (ha a szerver nem is elérhető) ezt adjuk vissza
+        return { error: "A szerver nem elérhető." };
     }
-    const data = await res.json()
-    return data
 }
 
 
@@ -86,5 +110,22 @@ export async function logout() { // <-- Figyelj, hogy pontosan 'logout' legyen!
         return await res.json();
     } catch (err) {
         return { error: "Nem sikerült a kijelentkezés." };
+    }
+}
+
+export async  function history(){
+    try {
+        const res = await fetch(`${Scan_Backend_URL}/auth/history`,{
+            method:'GET',
+            credentials: 'include'
+        })
+        if(!res.ok){
+            const data = await res.json()
+            return {error:data?.error}
+        }
+        const data = await res.json()
+        return data
+    } catch (err) {
+        
     }
 }

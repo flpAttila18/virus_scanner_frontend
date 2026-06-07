@@ -75,8 +75,8 @@ export default function Navbar() {
                                 
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark bg-black border-secondary" aria-labelledby="navbarDropdownMenuLink">
                                     <li>
-                                        <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/action')}>
-                                            Action
+                                        <button className="dropdown-item btn btn-link text-start text-decoration-none text-white" onClick={() => navigate('/history')}>
+                                            Upload History
                                         </button>
                                     </li>
                                     <li>

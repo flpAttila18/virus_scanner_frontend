@@ -7,6 +7,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Index from '../src/pages/Index'
 import Register from '../src/pages/Register'
 import Login from '../src/pages/Login'
+import History from './pages/History'
+import ProtectedRoute from './components/ProtectedRoute'
+
+
 import { AuthProvider } from '../src/context/Authcontext'
 
 createRoot(document.getElementById('root')).render(
@@ -17,6 +21,11 @@ createRoot(document.getElementById('root')).render(
         <Route path='/' element={<Index/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/history' element={
+          <ProtectedRoute>
+            <History />
+          </ProtectedRoute>
+        }/>
       </Routes>
     </BrowserRouter>
     </AuthProvider>

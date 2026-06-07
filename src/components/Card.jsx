@@ -48,63 +48,64 @@ export default function Card({ setScanResult }) {
 
 
 const handleScan = async () => {
-    if (!file) return
+    if (!file) return;
 
-    setLoading(true)
-    setStatusMessage("uploading and Scanning...")
+    setLoading(true);
+    setStatusMessage("Fájl feltöltése és vizsgálata folyamatban...");
 
     try {
-        const response = await uploadFileToBackend(file)
-        console.log("A szervertől kapott teljes objektum:", response) 
+        const response = await uploadFileToBackend(file);
+        console.log("A szervertől kapott teljes objektum:", response);
 
+        // Ha az api.js-ből a szép magyar hibaüzenet érkezik vissza
         if (response && response.error) {
-            setStatusMessage(`Error: ${response.error}`);
-            resetFilePicker()
-            return;
+            setStatusMessage(`Hiba: ${response.error}`);
+            setLoading(false); // Újra aktiváljuk a gombot
+            return; // Megállítjuk a futást, nem töröljük a fájlt
         }
 
-        // 1. Ha a várt struktúrában jön (response.scanResult)
+        // 1. Ha a várt struktúrában jön a sikeres válasz (response.scanResult)
         if (response && response.scanResult) {
             setScanResult(response.scanResult);
-            if (response.message) {
-                setStatusMessage(`Success: ${response.message}`);
+            if (response.Message) {
+                setStatusMessage(`Siker: ${response.Message}`);
             } else {
-                setStatusMessage(response.scanResult.isClean ? "Success: A file tiszta!" : "Warning: Veszélyes file!");
+                setStatusMessage(response.scanResult.IsClean ? "Siker: A fájl teljesen tiszta!" : "Figyelem: Veszélyes fájl észlelve!");
             }
         } 
-        // 2. Ha a backend véletlenül laposan küldte (response.isClean vagy response.CleanResult létezik közvetlenül)
-        else if (response && (typeof response.isClean !== 'undefined' || typeof response.CleanResult !== 'undefined')) {
-            const cleanStatus = typeof response.isClean !== 'undefined' ? response.isClean : response.CleanResult;
+        // 2. Ha a backend laposan küldte
+        else if (response && (typeof response.IsClean !== 'undefined' || typeof response.CleanResult !== 'undefined')) {
+            const cleanStatus = typeof response.IsClean !== 'undefined' ? response.IsClean : response.CleanResult;
             
             const customResult = {
-                isClean: cleanStatus,
-                foundViruses: response.foundViruses || response.FoundViruses || []
+                IsClean: cleanStatus,
+                FoundViruses: response.FoundViruses || []
             };
             
             setScanResult(customResult);
-            setStatusMessage(response.message || (cleanStatus ? "Success: A file tiszta!" : "Warning: Veszélyes file!"));
+            setStatusMessage(response.Message || (cleanStatus ? "Siker: A fájl tiszta!" : "Figyelem: Veszélyes fájl!"));
         }
-        // 3. Biztonsági mentés: ha van üzenet, de nem találtunk logikai státuszt, hátha a szövegből rájövünk
-        else if (response && response.message) {
-            setStatusMessage(`Success: ${response.message}`);
-            
-            // Ha a szöveg azt mondja, hogy tiszta, manuálisan összerakunk egy igazat az alsó kártyának
-            const looksClean = response.message.toLowerCase().includes("tiszta") || response.message.toLowerCase().includes("biztonságos");
+        // 3. Biztonsági mentés a szövegből
+        else if (response && response.Message) {
+            setStatusMessage(`Siker: ${response.Message}`);
+            const looksClean = response.Message.toLowerCase().includes("tiszta") || response.Message.toLowerCase().includes("biztonságos");
             setScanResult({
-                isClean: looksClean,
-                foundViruses: []
+                IsClean: looksClean,
+                FoundViruses: []
             });
         } else {
-            setStatusMessage("Success: Fájl elküldve!"); 
+            setStatusMessage("Siker: Fájl sikeresen elküldve!"); 
         }
+        
+        // Csak teljesen sikeres vizsgálat után töröljük a kijelölést
         resetFilePicker();
 
     } catch (err) {
-        setStatusMessage(`Error: ${err.message}` || "something went wrong")
+        setStatusMessage("Hiba: Váratlan hiba történt a kommunikáció során.");
     } finally {
-        setLoading(false)
+        setLoading(false);
     }
-}
+};
 
     return (
         <>

@@ -1,0 +1,168 @@
+/* A teljes oldal háttere - pontosan egyezik a főoldal és a regisztráció sötét tónusaival */
+.history-page-wrapper {
+    background: radial-gradient(circle at center, #070f1e 0%, #03070f 100%);
+    background-color: #03070f;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: #ffffff;
+}
+
+/* Belső konténer */
+.history-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Oldalcím a világító kék effektel */
+.history-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(0, 149, 255, 0.4);
+}
+
+/* Rácsrendszer a kártyáknak */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Kártyák sötétített box stílusa lekerekítve */
+.history-card {
+    background-color: #090d16; /* Sötét kártya háttér */
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.history-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Zöld és piros világító szegélyek az állapottól függően */
+.history-card.card-clean {
+    border-color: rgba(34, 197, 94, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.history-card.card-clean:hover {
+    border-color: rgba(34, 197, 94, 0.6);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.15);
+}
+
+.history-card.card-infected {
+    border-color: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.history-card.card-infected:hover {
+    border-color: rgba(239, 68, 68, 0.6);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.15);
+}
+
+/* Ikonok stílusa */
+.card-icon-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-clean {
+    color: #22c55e;
+    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.5));
+}
+
+.icon-infected {
+    color: #ef4448;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+/* Szövegek a kártyán belül */
+.card-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.file-icon {
+    color: #64748b;
+    flex-shrink: 0;
+}
+
+.file-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f1f5f9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status-text-zone {
+    font-size: 13px;
+}
+
+.status-label {
+    color: #475569;
+    margin: 0;
+}
+
+.status-value {
+    margin: 2px 0 0 0;
+    font-weight: 700;
+}
+
+.text-clean {
+    color: #22c55e;
+}
+
+.text-infected {
+    color: #ef4448;
+}
+
+/* Üres állapot box */
+.empty-history-box {
+    background-color: #090d16;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    color: #64748b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Középre igazító osztály a betöltőhöz és hibához */
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: #0095ff;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

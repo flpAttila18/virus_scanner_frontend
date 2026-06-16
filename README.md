@@ -47,21 +47,23 @@
 ├── package-lock.json
 ├── package.json
 └── vite.config.js
-Application Features & Views
-Main Dashboard (Index)
+
+
+# Application Features & Views
+## Main Dashboard (Index)
 The landing interface welcomes users with a clean, centered hub displaying the main scanning features and quick-access application options.
 
-Navigation Bar (Navbar)
+## Navigation Bar (Navbar)
 A highly polished, context-aware layout. When a user is logged in, it dynamically fetches the live database profile state to display the personalized username alongside their custom round cropped avatar dropdown. For unauthenticated guests, it presents unified registration and login entry points.
 
-QR Code Generator
+## QR Code Generator
 A functional dedicated workspace utility allowing users to generate, configure, and output custom QR codes on demand.
 
-Scan History
+## Scan History
 A structured data table layout fetching backend logs specific to the authenticated token identity, tracking uploaded file structures, scan statuses, and detailed threat breakdowns.
 
-Authentication (Login & Register)
+## Authentication (Login & Register)
 Secure and validated client-side entry forms linked directly with cross-origin credential-sharing services to process standard registration and stateful cookie management.
 
-Account Settings & Profile
+## Account Settings & Profile
 An interactive panel dedicated to user customization. It provides live client-side input triggers allowing users to modify their active aliases or dynamically upload custom image files via automated multipart form handlers.

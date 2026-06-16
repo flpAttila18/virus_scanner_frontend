@@ -4,6 +4,8 @@ import Card from '../components/Card'
 import WriteOutCard from '../components/WriteOutCard'
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
+import "../cssFolder/index.css"
+
 
 export default function Index() {
     const [scanResult, setScanResult] = useState(null)

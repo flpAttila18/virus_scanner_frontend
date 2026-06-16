@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiShield, FiZap, FiActivity } from 'react-icons/fi';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +18,19 @@ export default function Register() {
     const [psw2 , setPsw2] = useState("")
     const [mess , setMess] = useState("")
 
+
+useEffect(() => {
+        // Amikor belép az oldalra, leszedjük a világos módot
+        document.body.classList.remove("light-mode");
+
+        // Amikor elhagyja az oldalt, visszaállítjuk azt, ami a localStorage-ban van
+        return () => {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "light") {
+                document.body.classList.add("light-mode");
+            }
+        };
+    }, []);
 
     async function  onReg() {
         setMess('')
@@ -42,7 +55,7 @@ export default function Register() {
 
 
     return (
-        <div className="register-page-bg d-flex align-items-center justify-content-center min-vh-100 px-3">
+        <div className="register-page-bg d-flex align-items-center justify-content-center min-vh-100 px-3 auth-page">
             <div className="container" style={{ maxWidth: '1200px' }}>
                 <div className="row align-items-center g-5">
                     

@@ -1,4 +1,7 @@
-/* A teljes oldal háttere - pontosan egyezik a főoldal és a regisztráció sötét tónusaival */
+/* ==========================================================================
+   UPLOAD HISTORY - ALAP STÍLUSOK (SÖTÉT MÓD)
+   ========================================================================== */
+
 .history-page-wrapper {
     background: radial-gradient(circle at center, #070f1e 0%, #03070f 100%);
     background-color: #03070f;
@@ -11,13 +14,11 @@
     color: #ffffff;
 }
 
-/* Belső konténer */
 .history-container {
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Oldalcím a világító kék effektel */
 .history-title {
     font-size: 26px;
     font-weight: 700;
@@ -26,16 +27,14 @@
     text-shadow: 0 0 15px rgba(0, 149, 255, 0.4);
 }
 
-/* Rácsrendszer a kártyáknak */
 .history-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
-/* Kártyák sötétített box stílusa lekerekítve */
 .history-card {
-    background-color: #090d16; /* Sötét kártya háttér */
+    background-color: #090d16;
     border: 1px solid #1e293b;
     border-radius: 12px;
     padding: 18px;
@@ -49,7 +48,6 @@
     transform: translateY(-3px);
 }
 
-/* Zöld és piros világító szegélyek az állapottól függően */
 .history-card.card-clean {
     border-color: rgba(34, 197, 94, 0.25);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -70,7 +68,6 @@
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.15);
 }
 
-/* Ikonok stílusa */
 .card-icon-zone {
     display: flex;
     align-items: center;
@@ -88,7 +85,6 @@
     filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
 }
 
-/* Szövegek a kártyán belül */
 .card-details {
     flex: 1;
     overflow: hidden;
@@ -137,7 +133,6 @@
     color: #ef4448;
 }
 
-/* Üres állapot box */
 .empty-history-box {
     background-color: #090d16;
     border: 1px solid #1e293b;
@@ -148,7 +143,6 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Középre igazító osztály a betöltőhöz és hibához */
 .flex-center {
     display: flex;
     flex-direction: column;
@@ -165,4 +159,33 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   UPLOAD HISTORY - VILÁGOS MÓD JAVÍTÁSOK
+   ========================================================================== */
+
+body.light-mode .history-page-wrapper {
+    background: #f8f9fa !important;
+    color: #212529 !important;
+}
+
+body.light-mode .history-title {
+    color: #111827 !important;
+    text-shadow: none !important;
+}
+
+body.light-mode .history-card,
+body.light-mode .empty-history-box {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .file-name {
+    color: #1e293b !important;
+}
+
+body.light-mode .status-label {
+    color: #64748b !important;
 }

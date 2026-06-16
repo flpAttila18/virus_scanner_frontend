@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiShield, FiZap, FiActivity, FiCheckCircle } from 'react-icons/fi';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,35 +15,52 @@ export default function Login() {
     const [isPending, setIsPending] = useState(false); // Küldés alatti állapot
     const [isSuccess, setIsSuccess] = useState(false); // Sikeres belépés állapot
 
-    async function onLog() {
-        if (!email || !psw) {
-            return alert("minden mezőt tölts ki ");
-        }
 
-        setIsPending(true);
+    useEffect(() => {
+        // Amikor belép az oldalra, leszedjük a világos módot
+        document.body.classList.remove("light-mode");
 
-        try {
-            const data = await login(email, psw);
-            if (data.error) {
-                setIsPending(false);
-                return alert(data.error);
+        // Amikor elhagyja az oldalt, visszaállítjuk azt, ami a localStorage-ban van
+        return () => {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "light") {
+                document.body.classList.add("light-mode");
             }
-            
-            loginUser(data);
-            setIsPending(false);
-            setIsSuccess(true); // Elindítja a sikeres animációt
+        };
+    }, []);
 
-            setTimeout(() => {
-                navigate('/');
-            }, 900); // 0.75 másodperc, hogy gyönyörködhessünk az animációban
-        } catch (err) {
-            setIsPending(false);
-            alert("nem sikerült kapcsolódni a backendhez");
-        }
+
+async function onLog() {
+    if (!email || !psw) {
+        return alert("minden mezőt tölts ki ");
     }
 
+    setIsPending(true);
+
+    try {
+        const data = await login(email, psw);
+        if (data.error) {
+            setIsPending(false);
+            return alert(data.error);
+        }
+        
+        // --- ITT VÁLTOZIK ---
+        // Nem adunk át semmit, hanem megvárjuk, amíg a Context maga kéri le a friss adatot a whoami-val!
+        await loginUser(); 
+        
+        setIsPending(false);
+        setIsSuccess(true); // Elindítja a sikeres animációt
+
+        setTimeout(() => {
+            navigate('/');
+        }, 900); 
+    } catch (err) {
+        setIsPending(false);
+        alert("nem sikerült kapcsolódni a backendhez");
+    }
+}
     return (
-        <div className="register-page-bg d-flex align-items-center justify-content-center min-vh-100 px-3">
+        <div className="register-page-bg d-flex align-items-center justify-content-center min-vh-100 px-3 auth-page">
             <div className="container" style={{ maxWidth: '1200px' }}>
                 <div className="row align-items-center g-5">
 

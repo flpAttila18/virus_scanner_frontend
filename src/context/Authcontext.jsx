@@ -8,27 +8,32 @@ export function AuthProvider({ children }) {
     const [errorUser, setErrorUser] = useState('');
     const [loading, setLoading] = useState(true);
 
-    // Ez fut le az oldal betöltésekor (F5-nél)
+    // Külön kiszervezzük a betöltő függvényt, hogy bárhonnan meg tudjuk hívni
+    async function loadUser() {
+        setLoading(true); // Újra bekapcsoljuk a betöltést a biztonság kedvéért
+        try {
+            const data = await whoami();
+            if (data && !data.error) {
+                setUser(data);
+            } else {
+                setUser(null);
+            }
+        } catch (err) {
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     // Ez fut le az oldal betöltésekor (F5-nél)
     useEffect(() => {
-        async function loadUser() {
-            try {
-                const data = await whoami();
-                if (data && !data.error) {
-                    setUser(data);
-                } else {
-                    setUser(null); // Ha hiba van (pl. 401), csendben null-ra állítjuk
-                }
-            } catch (err) {
-                setUser(null); // Bármilyen váratlan hiba esetén is biztonságban null marad
-            } finally {
-                setLoading(false); // Ez GARANTÁLTAN lefut, így nem akad be a betöltő képernyő
-            }
-        }
         loadUser();
     }, []);
-    const loginUser = (userData) => {
-        setUser(userData);
+
+    // JAVÍTÁS: A loginUser mostantól egy aszinkron függvény, 
+    // ami kényszeríti a rendszert a friss adatok lekérésére!
+    const loginUser = async () => {
+        await loadUser(); // Megvárjuk, amíg a whoami() közvetlenül a backendtől lekéri a friss adatokat
     };
 
     async function onLogout() {
@@ -41,7 +46,6 @@ export function AuthProvider({ children }) {
     }
 
     return (
-        /* A loginUser-t is betesszük a value-ba, hogy elérjük kívülről */
         <AuthContext.Provider value={{ user, setUser, loginUser, loading, errorUser, onLogout }}>
             {children}
         </AuthContext.Provider>

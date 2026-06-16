@@ -1,0 +1,98 @@
+/* Beállítások Kártya - szintén !important nélkül */
+.settings-card {
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    max-width: 550px;
+    width: 100%;
+}
+
+.settings-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+/* Sorok elrendezése */
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.settings-label {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.settings-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin: 2px 0 0 0;
+}
+
+/* Egyedi nyelvválasztó legördülő menü */
+.settings-select {
+    background-color: #000000;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.settings-select:focus {
+    outline: none;
+}
+
+/* Egyedi golyóálló Toggle Switch (Kapcsoló) */
+.custom-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.custom-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* A .slider sötét és világos módú vezérlését teljes egészében az index.css intézi, 
+   itt csak az alap méretezést és pozicionálást hagyjuk meg! */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}

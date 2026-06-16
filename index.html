@@ -1,13 +1,29 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>virus_scanner_frontend</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>virus_scanner_frontend</title>
+  <script>
+    (function () {
+    const theme = localStorage.getItem("theme");
+    const isAuthPage = window.location.pathname.includes("login") || window.location.pathname.includes("register");
+
+    // A ?. megvédi a kódot az összeomlástól, ha a body még null
+    if (theme === "light" && !isAuthPage) {
+      document.body?.classList.add("light-mode");
+    } else {
+      document.body?.classList.remove("light-mode");
+    }
+  })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

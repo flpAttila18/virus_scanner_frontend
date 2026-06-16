@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/Authcontext';
 
+
 export default function ProtectedRoute({ children }) {
     // Kicsomagoljuk a te AuthContext-edből a user és loading állapotokat
     const { user, loading } = useAuth();

@@ -3,6 +3,8 @@ import { ShieldCheck, ShieldAlert, FileText, Loader2 } from 'lucide-react';
 import '../cssFolder/ScanHistory.css';
 import Navbar from '../components/Navbar';
 import { history as fetchHistory } from '../api';
+import "../cssFolder/index.css"
+
 
 export default function History() {
     const [historyData, setHistoryData] = useState([]);

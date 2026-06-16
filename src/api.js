@@ -1,4 +1,4 @@
-const Scan_Backend_URL = 'http://localhost:5000/api'
+export const Scan_Backend_URL = 'http://localhost:5000/api'
 
 export async function uploadFileToBackend(file) {
     try {
@@ -126,6 +126,52 @@ export async  function history(){
         const data = await res.json()
         return data
     } catch (err) {
-        
+        return {error : "Nem sikerült lekérni az adatokat"}
+    }
+}
+
+export async function updateUserName(usernameData) { // Kis 'u' és nagy 'N' a névben
+    try {
+        const res = await fetch(`${Scan_Backend_URL}/auth/updateUserName`, {
+            method: 'PUT',
+            credentials: 'include', // Itt javítottuk korábban a kettőspontot
+            headers: {
+                'Content-Type': 'application/json' // Jelezzük a backendnek, hogy JSON-t küldünk
+            },
+            body: JSON.stringify(usernameData) // Ez küldi el a { Username: "..." } objektumot
+        });
+
+        if (!res.ok) {
+            const data = await res.json();
+            return { error: data?.error || 'Hiba történt a frissítés során.' };
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        return { error: 'Nem sikerült megváltoztatni a felhasználónevet' };
+    }
+}
+
+
+export async function UploadProfilePicture(file) {
+    try {
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${Scan_Backend_URL}/auth/uploadPfp`,{
+            method :'POST',
+            credentials:'include',
+            body: formData
+        });
+        if(!res.ok){
+            const data = await res.json()
+            return {error: data?.error || 'Hiba történt a kép feltöltése során'} 
+        }
+        const data = await res.json()
+        return data ;
+
+
+    } catch (ex) {
+        return {error : 'hálózati hiba történt '}
     }
 }

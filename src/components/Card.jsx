@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { uploadFileToBackend } from "../api"
+import "../cssFolder/index.css"
 
 export default function Card({ setScanResult }) {
 
@@ -55,49 +56,43 @@ const handleScan = async () => {
 
     try {
         const response = await uploadFileToBackend(file);
-        console.log("A szervertől kapott teljes objektum:", response);
 
-        // Ha az api.js-ből a szép magyar hibaüzenet érkezik vissza
+        // 1. Ha hitelesítési vagy hálózati hiba jött vissza az api.js-ből
         if (response && response.error) {
             setStatusMessage(`Hiba: ${response.error}`);
-            setLoading(false); // Újra aktiváljuk a gombot
-            return; // Megállítjuk a futást, nem töröljük a fájlt
+            setLoading(false);
+            return;
         }
 
-        // 1. Ha a várt struktúrában jön a sikeres válasz (response.scanResult)
+        // 2. Kinyerjük a tisztasági állapotot a backend válaszból
+        let isCleanResult = false;
+        let foundVirusesList = [];
+
         if (response && response.scanResult) {
-            setScanResult(response.scanResult);
-            if (response.Message) {
-                setStatusMessage(`Siker: ${response.Message}`);
-            } else {
-                setStatusMessage(response.scanResult.IsClean ? "Siker: A fájl teljesen tiszta!" : "Figyelem: Veszélyes fájl észlelve!");
-            }
-        } 
-        // 2. Ha a backend laposan küldte
-        else if (response && (typeof response.IsClean !== 'undefined' || typeof response.CleanResult !== 'undefined')) {
-            const cleanStatus = typeof response.IsClean !== 'undefined' ? response.IsClean : response.CleanResult;
-            
-            const customResult = {
-                IsClean: cleanStatus,
-                FoundViruses: response.FoundViruses || []
-            };
-            
-            setScanResult(customResult);
-            setStatusMessage(response.Message || (cleanStatus ? "Siker: A fájl tiszta!" : "Figyelem: Veszélyes fájl!"));
+            isCleanResult = response.scanResult.IsClean || response.scanResult.isClean || false;
+            foundVirusesList = response.scanResult.FoundViruses || response.scanResult.foundViruses || [];
+        } else if (response) {
+            isCleanResult = response.IsClean || response.isClean || response.CleanResult || false;
+            foundVirusesList = response.FoundViruses || response.foundViruses || [];
         }
-        // 3. Biztonsági mentés a szövegből
-        else if (response && response.Message) {
-            setStatusMessage(`Siker: ${response.Message}`);
-            const looksClean = response.Message.toLowerCase().includes("tiszta") || response.Message.toLowerCase().includes("biztonságos");
-            setScanResult({
-                IsClean: looksClean,
-                FoundViruses: []
-            });
+
+        // 3. Golyóálló objektumot építünk az alsó kártyának (kis- és nagybetűvel is megadjuk!)
+        const finalResult = {
+            isClean: isCleanResult,
+            IsClean: isCleanResult,
+            foundViruses: foundVirusesList,
+            FoundViruses: foundVirusesList
+        };
+        setScanResult(finalResult);
+
+        // 4. A felső sáv üzenetét pontosan szinkronizáljuk az eredménnyel
+        if (isCleanResult) {
+            setStatusMessage("Siker: A fájl biztonságos, kártevő nem található!");
         } else {
-            setStatusMessage("Siker: Fájl sikeresen elküldve!"); 
+            setStatusMessage("Figyelem: Veszélyes fájl észlelve!");
         }
-        
-        // Csak teljesen sikeres vizsgálat után töröljük a kijelölést
+
+        // Sikeres lefutás után visszaállítjuk a fájlválasztót
         resetFilePicker();
 
     } catch (err) {
@@ -106,7 +101,6 @@ const handleScan = async () => {
         setLoading(false);
     }
 };
-
     return (
         <>
             <div className="card text-center text-white bg-black border border-white border-1 size">

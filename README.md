@@ -12,6 +12,7 @@
 
 ## Project Structure
 
+```markdown
 ├── public/
 ├── src/
 │   ├── assets/
